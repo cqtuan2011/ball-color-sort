@@ -10,31 +10,41 @@ public class Game : MonoBehaviour
 
     public List<Bottle> bottles;
 
-    private IEnumerator Start()
+    private void Start()
     {
         bottles = new List<Bottle>();
 
         bottles.Add(new Bottle
         {
-            balls = new List<Ball> { new Ball { type = BallType.RED } }
+            balls = new List<Ball> { new Ball { type = BallType.RED }, new Ball { type = BallType.RED } }
         });
 
         bottles.Add(new Bottle
         {
-            balls = new List<Ball> { new Ball { type = BallType.RED }, new Ball { type = BallType.RED }, new Ball { type = BallType.RED } }
+            balls = new List<Ball> { new Ball { type = BallType.RED }, new Ball { type = BallType.RED } }
         });
 
+        bottles.Add(new Bottle
+        {
+            balls = new List<Ball> { new Ball { type = BallType.BLUE }, new Ball { type = BallType.GREEN }, new Ball { type = BallType.GREEN } }
+        });
+
+        bottles.Add(new Bottle
+        {
+            balls = new List<Ball> { new Ball { type = BallType.YELLOW }, new Ball { type = BallType.BLUE }, new Ball { type = BallType.GREEN } }
+        });
+        
         gameGraphics.Initialization(bottles);
 
-        PrintBottles();
+        //PrintBottles();
 
-        yield return new WaitForSeconds(2.5f);
+        //yield return new WaitForSeconds(2.5f);
 
-        SwitchBall(bottles[0], bottles[1]);
+        //SwitchBall(bottles[0], bottles[1]);
 
-        gameGraphics.RefreshGameGraphic(bottles);
+        //gameGraphics.RefreshGameGraphic(bottles);
 
-        PrintBottles();
+        //PrintBottles();
     }
 
     public void PrintBottles()
@@ -96,7 +106,16 @@ public class Game : MonoBehaviour
             bottle1Balls.Remove(topBall1);
             bottle2Balls.Add(topBall1);
         }
-        //gameGraphics.RefreshGameGraphic(bottles);
+
+        gameGraphics.RefreshGameGraphic(bottles);
+    }
+
+    public void SwitchBall(int bottleIndex1, int bottleIndex2)
+    {
+        Bottle b1 = bottles[bottleIndex1];
+        Bottle b2 = bottles[bottleIndex2];
+
+        SwitchBall(b1, b2);
     }
 
     public bool CheckWinCondition()

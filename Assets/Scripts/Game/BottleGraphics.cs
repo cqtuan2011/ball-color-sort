@@ -5,10 +5,25 @@ using UnityEngine;
 
 public class BottleGraphics : MonoBehaviour
 {
+    public int index;
+
     [SerializeField] private GameObject ballPrefab;
+
     [SerializeField] private Transform ballParent;
 
     [SerializeField] private List<BallGraphics> ballGraphics;
+
+    private GameGraphics gameGraphics;
+
+    private void Awake()
+    {
+        gameGraphics = FindObjectOfType<GameGraphics>();
+    }
+
+    private void OnMouseUpAsButton()
+    {
+        gameGraphics.OnClickBottle(this.index);
+    }
 
     public void RefreshBottleGraphic(List<Game.Ball> balls)
     {

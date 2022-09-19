@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class GameGraphics : MonoBehaviour
 {
+    public int selectedBottleIndex = -1; // default is -1
+
+    [SerializeField] private Game game;
+
     [SerializeField] private GameObject bottlePrefab;
 
     [SerializeField] private List<Transform> bottlePlaces;
@@ -27,6 +31,20 @@ public class GameGraphics : MonoBehaviour
         for (int i = 0; i < bottleGraphics.Count; i++)
         {
             bottleGraphics[i].RefreshBottleGraphic(bottles[i].balls);
+            bottleGraphics[i].index = i;
         }
     }
+
+    public void OnClickBottle(int bottleIndex)
+    {
+        if (selectedBottleIndex == -1)
+        {
+            selectedBottleIndex = bottleIndex;
+        } else
+        {
+            game.SwitchBall(selectedBottleIndex, bottleIndex);
+
+            selectedBottleIndex = -1;
+        }
+    } 
 }
