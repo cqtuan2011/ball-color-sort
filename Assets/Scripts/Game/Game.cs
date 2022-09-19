@@ -10,25 +10,29 @@ public class Game : MonoBehaviour
 
     public List<Bottle> bottles;
 
-    private void Start()
+    private IEnumerator Start()
     {
         bottles = new List<Bottle>();
 
         bottles.Add(new Bottle
         {
-            balls = new List<Ball> { new Ball { type = BallType.RED }, new Ball { type = BallType.RED } }
+            balls = new List<Ball> { new Ball { type = BallType.RED } }
         });
 
         bottles.Add(new Bottle
         {
-            balls = new List<Ball> { new Ball { type = BallType.RED }, new Ball { type = BallType.RED } }
+            balls = new List<Ball> { new Ball { type = BallType.RED }, new Ball { type = BallType.RED }, new Ball { type = BallType.RED } }
         });
 
         gameGraphics.Initialization(bottles);
 
         PrintBottles();
 
+        yield return new WaitForSeconds(2.5f);
+
         SwitchBall(bottles[0], bottles[1]);
+
+        gameGraphics.RefreshGameGraphic(bottles);
 
         PrintBottles();
     }
@@ -57,10 +61,8 @@ public class Game : MonoBehaviour
 
         Debug.Log("Is win: " + isWin);
         Debug.Log("Total bottles is: " + bottles.Count);
-
-
-        Debug.Log("Bottle 1 balls cound: " + bottles[0].balls.Count);
-        Debug.Log("Bottle 2 balls cound: " + bottles[1].balls.Count);
+        Debug.Log("Bottle 1 balls count: " + bottles[0].balls.Count);
+        Debug.Log("Bottle 2 balls count: " + bottles[1].balls.Count);
     } // Console debug
 
     public void SwitchBall(Bottle bottle1, Bottle bottle2)

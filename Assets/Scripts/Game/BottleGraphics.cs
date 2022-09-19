@@ -10,8 +10,15 @@ public class BottleGraphics : MonoBehaviour
 
     [SerializeField] private List<BallGraphics> ballGraphics;
 
-    public void Initialization(List<Game.Ball> balls)
+    public void RefreshBottleGraphic(List<Game.Ball> balls)
     {
+        ballGraphics.Clear();
+
+        foreach (Transform ball in ballParent.transform)
+        {
+            Destroy(ball.gameObject);
+        }
+
         for (int i = 0; i < balls.Count; i++)
         {
             var newBall =  Instantiate(ballPrefab);
@@ -26,27 +33,6 @@ public class BottleGraphics : MonoBehaviour
             ballGraphics[i].SetColor(balls[i].type);
 
             ballGraphics[i].gameObject.transform.localPosition = new Vector2(0, i);
-        }
-    }
-
-    public void RefreshBottleGraphic(List<Game.Ball> balls)
-    {
-        this.ballGraphics.Clear();
-
-        BallGraphics[] ballGraphics;
-
-        ballGraphics = ballParent.GetComponentsInChildren<BallGraphics>();
-
-        for (int i = 0; i < ballGraphics.Length; i++)
-        {
-            this.ballGraphics.Add(ballGraphics[i]);
-        }
-
-        for (int i = 0; i < this.ballGraphics.Count; i++)
-        {
-            this.ballGraphics[i].SetColor(balls[i].type);
-
-            this.ballGraphics[i].gameObject.transform.localPosition = new Vector2(0, i);
         }
     }
 }

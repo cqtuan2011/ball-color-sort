@@ -19,10 +19,7 @@ public class GameGraphics : MonoBehaviour
             bottleGraphics.Add(newBottle.GetComponent<BottleGraphics>());
         }
 
-        for (int i = 0; i < bottleGraphics.Count; i++)
-        {
-            bottleGraphics[i].Initialization(bottles[i].balls);
-        }
+        RefreshGameGraphic(bottles);
     }
 
     public void RefreshGameGraphic(List<Game.Bottle> bottles)
