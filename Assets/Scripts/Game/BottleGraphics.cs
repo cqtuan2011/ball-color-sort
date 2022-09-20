@@ -11,7 +11,7 @@ public class BottleGraphics : MonoBehaviour
 
     [SerializeField] private Transform ballParent;
 
-    [SerializeField] private List<BallGraphics> ballGraphics;
+    public List<BallGraphics> ballGraphics;
 
     private GameGraphics gameGraphics;
 

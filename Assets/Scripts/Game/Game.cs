@@ -95,7 +95,7 @@ public class Game : MonoBehaviour
                 Ball topBall2 = bottle2Balls[topIndex2];
                 BallType type2 = topBall2.type;
 
-                if (ball.type == type2) 
+                if (ball.type == type2 && bottle2Balls.Count < 4) 
                 {
                     bottle1Balls.RemoveAt(i);
                     bottle2Balls.Add(ball);

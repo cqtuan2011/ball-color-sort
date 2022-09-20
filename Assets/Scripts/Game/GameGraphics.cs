@@ -10,6 +10,8 @@ public class GameGraphics : MonoBehaviour
 
     [SerializeField] private GameObject bottlePrefab;
 
+    [SerializeField] private GameObject ballPrefab;
+
     [SerializeField] private List<Transform> bottlePlaces;
 
     [SerializeField] public List<BottleGraphics> bottleGraphics;
@@ -40,11 +42,35 @@ public class GameGraphics : MonoBehaviour
         if (selectedBottleIndex == -1)
         {
             selectedBottleIndex = bottleIndex;
+
+            //MoveBallUp(bottleIndex);
+
         } else
         {
             game.SwitchBall(selectedBottleIndex, bottleIndex);
 
             selectedBottleIndex = -1;
         }
-    } 
+    }
+
+    private void MoveBallUp(int bottleIndex)
+    {
+        
+        //Determine the chosen bottle
+        Game.Bottle bottle = game.bottles[bottleIndex];
+        BottleGraphics bottleGraphics = this.bottleGraphics[bottleIndex];
+
+        //Get the top ball of that bottle
+        if (bottle.balls.Count == 0) return;
+
+        int index = bottle.balls.Count - 1;
+        Game.Ball ball = bottle.balls[index];
+        BallGraphics ballGraphics = bottleGraphics.ballGraphics[index];
+
+        //Create new ball graphic for the movement
+        GameObject previewBall = Instantiate(ballPrefab,ballGraphics.gameObject.transform.position, Quaternion.identity);
+
+        previewBall.GetComponent<BallGraphics>().SetColor(BallType.BLUE);
+
+    }
 }
