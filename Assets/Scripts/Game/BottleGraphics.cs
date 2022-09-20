@@ -7,13 +7,15 @@ public class BottleGraphics : MonoBehaviour
 {
     public int index;
 
-    [SerializeField] private GameObject ballPrefab;
-
-    [SerializeField] private Transform ballParent;
+    public Transform pickUpPosition;
 
     public List<BallGraphics> ballGraphics;
 
+    public Transform ballParent;
+
     private GameGraphics gameGraphics;
+
+    [SerializeField] private GameObject ballPrefab;
 
     private void Awake()
     {

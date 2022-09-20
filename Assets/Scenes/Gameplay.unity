@@ -948,7 +948,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &384605306
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3446,6 +3446,8 @@ MonoBehaviour:
   - {fileID: 2112757134}
   - {fileID: 236523818}
   bottleGraphics: []
+  ballToMove: {fileID: 0}
+  moveTime: 0.2
 --- !u!1 &1503073527
 GameObject:
   m_ObjectHideFlags: 0

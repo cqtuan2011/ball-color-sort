@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class GameGraphics : MonoBehaviour
 {
@@ -15,6 +16,9 @@ public class GameGraphics : MonoBehaviour
     [SerializeField] private List<Transform> bottlePlaces;
 
     [SerializeField] public List<BottleGraphics> bottleGraphics;
+
+    [SerializeField] private GameObject ballToMove;
+    [SerializeField] private float moveTime = 0.5f;
 
     public void Initialization(List<Game.Bottle> bottles)
     {
@@ -43,11 +47,13 @@ public class GameGraphics : MonoBehaviour
         {
             selectedBottleIndex = bottleIndex;
 
-            //MoveBallUp(bottleIndex);
+            MoveBallUp(bottleIndex);
 
         } else
         {
             game.SwitchBall(selectedBottleIndex, bottleIndex);
+
+            SwitchBallGraphic(bottleIndex);
 
             selectedBottleIndex = -1;
         }
@@ -55,7 +61,6 @@ public class GameGraphics : MonoBehaviour
 
     private void MoveBallUp(int bottleIndex)
     {
-        
         //Determine the chosen bottle
         Game.Bottle bottle = game.bottles[bottleIndex];
         BottleGraphics bottleGraphics = this.bottleGraphics[bottleIndex];
@@ -68,9 +73,31 @@ public class GameGraphics : MonoBehaviour
         BallGraphics ballGraphics = bottleGraphics.ballGraphics[index];
 
         //Create new ball graphic for the movement
-        GameObject previewBall = Instantiate(ballPrefab,ballGraphics.gameObject.transform.position, Quaternion.identity);
+        ballToMove = Instantiate(ballPrefab,ballGraphics.gameObject.transform.position, Quaternion.identity);
+        ballToMove.GetComponent<BallGraphics>().SetColor(ball.type);
+        
+        Destroy(ballGraphics.gameObject);
+        ballToMove.transform.DOMove(bottleGraphics.pickUpPosition.position, moveTime);
+    }
 
-        previewBall.GetComponent<BallGraphics>().SetColor(BallType.BLUE);
+    private void SwitchBallGraphic(int toBottleIndex)
+    {
+        if (ballToMove == null) return;
 
+        BottleGraphics bottleGraphics = this.bottleGraphics[toBottleIndex];
+
+        Sequence sequence = DOTween.Sequence();
+
+        ballToMove.transform.SetParent(bottleGraphics.ballParent);
+
+        sequence.Append(ballToMove.transform.DOMove(bottleGraphics.pickUpPosition.position, moveTime))
+            .Append(ballToMove.transform.DOMove(bottleGraphics.pickUpPosition.position, moveTime))
+            .Append(ballToMove.transform.DOLocalMove(new Vector3(0, bottleGraphics.ballGraphics.Count - 1, 0), moveTime))
+            .OnComplete(DestroyBall);
+    }
+
+    private void DestroyBall()
+    {
+        Destroy(ballToMove);
     }
 }
