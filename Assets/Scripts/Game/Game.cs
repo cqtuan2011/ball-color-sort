@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
+using static Game;
 
 public class Game : MonoBehaviour
 {
@@ -98,6 +99,7 @@ public class Game : MonoBehaviour
                 if (ball.type == type2 && bottle2Balls.Count < 4) 
                 {
                     bottle1Balls.RemoveAt(i);
+
                     bottle2Balls.Add(ball);
                 }
                 else
@@ -167,6 +169,62 @@ public class Game : MonoBehaviour
             }
         }
         return winFlag;
+    }
+
+    public List<Ball> GetSwitchBallList(int bottleIndex1, int bottleIndex2)
+    {
+        List<Ball> switchBallList = null;
+
+        Bottle b1 = bottles[bottleIndex1];
+        Bottle b2 = bottles[bottleIndex2];
+
+        List<Ball> bottle1Balls = b1.balls;
+        List<Ball> bottle2Balls = b2.balls;
+
+        if (bottle1Balls.Count == 0)
+            return switchBallList;
+
+        if (bottle2Balls.Count == 4)
+            return switchBallList;
+
+        int topIndex1 = bottle1Balls.Count - 1;
+        Ball topBall1 = bottle1Balls[topIndex1];
+        BallType type1 = topBall1.type;
+
+        for (int i = topIndex1; i >= 0; i--)
+        {
+            Ball ball = bottle1Balls[i];
+
+            if (bottle2Balls.Count > 0)
+            {
+                int topIndex2 = bottle2Balls.Count - 1;
+                Ball topBall2 = bottle2Balls[topIndex2];
+                BallType type2 = topBall2.type;
+
+                if (ball.type == type2 && bottle2Balls.Count < 4)
+                {
+                    switchBallList.Add(ball);
+                }
+                else
+                {
+                    break;
+                }
+            }
+            else // Case: Bottle 2 is empty
+            {
+                if (ball.type == type1) // Gett all the same color of ball to another tube 
+                {
+                    bottle1Balls.RemoveAt(i);
+                    bottle2Balls.Add(ball);
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+
+        return switchBallList;
     }
 
     public class Bottle

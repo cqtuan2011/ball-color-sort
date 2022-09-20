@@ -948,7 +948,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &384605306
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3439,6 +3439,7 @@ MonoBehaviour:
   selectedBottleIndex: -1
   game: {fileID: 1476029077}
   bottlePrefab: {fileID: 5814485488034486244, guid: 5ad934cf4f618488c9659595f239b8a7, type: 3}
+  ballPrefab: {fileID: 1704971040702351903, guid: ad6b1e777823a418291f64774837ab9a, type: 3}
   bottlePlaces:
   - {fileID: 1102295941}
   - {fileID: 1118645784}
