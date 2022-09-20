@@ -16,22 +16,22 @@ public class Game : MonoBehaviour
 
         bottles.Add(new Bottle
         {
-            balls = new List<Ball> { new Ball { type = BallType.RED }, new Ball { type = BallType.RED } }
+            balls = new List<Ball> { new Ball { type = BallType.GREEN }, new Ball { type = BallType.RED }, new Ball { type = BallType.RED } }
         });
 
         bottles.Add(new Bottle
         {
-            balls = new List<Ball> { new Ball { type = BallType.RED }, new Ball { type = BallType.RED } }
+            balls = new List<Ball> { new Ball { type = BallType.GREEN}, new Ball { type = BallType.RED } }
         });
 
         bottles.Add(new Bottle
         {
-            balls = new List<Ball> { new Ball { type = BallType.BLUE }, new Ball { type = BallType.GREEN }, new Ball { type = BallType.GREEN } }
+            balls = new List<Ball> { new Ball { type = BallType.GREEN }, new Ball { type = BallType.RED }, new Ball { type = BallType.GREEN } }
         });
 
         bottles.Add(new Bottle
         {
-            balls = new List<Ball> { new Ball { type = BallType.YELLOW }, new Ball { type = BallType.BLUE }, new Ball { type = BallType.GREEN } }
+            balls = new List<Ball>()
         });
         
         gameGraphics.Initialization(bottles);
@@ -66,13 +66,6 @@ public class Game : MonoBehaviour
             Debug.Log(sb.ToString());
             sb.Clear();
         }
-
-        bool isWin = CheckWinCondition();
-
-        Debug.Log("Is win: " + isWin);
-        Debug.Log("Total bottles is: " + bottles.Count);
-        Debug.Log("Bottle 1 balls count: " + bottles[0].balls.Count);
-        Debug.Log("Bottle 2 balls count: " + bottles[1].balls.Count);
     } // Console debug
 
     public void SwitchBall(Bottle bottle1, Bottle bottle2)
@@ -87,26 +80,46 @@ public class Game : MonoBehaviour
         if (bottle2Balls.Count == 4)
             return;
 
-        Ball topBall1 = bottle1Balls[bottle1.balls.Count - 1];
+        //Switch ball
+        int topIndex1 = bottle1Balls.Count - 1;
+        Ball topBall1 = bottle1Balls[topIndex1];
+        BallType type1 = topBall1.type;
 
-        if (bottle2Balls.Count > 0)
+        for (int i = topIndex1; i >= 0; i--)
         {
-            Ball topBall2 = bottle2Balls[bottle2.balls.Count - 1];
+            Ball ball = bottle1Balls[i];
 
-            if (topBall1.type != topBall2.type)
+            if (bottle2Balls.Count > 0)
             {
-                return;
-            } else
-            {
-                bottle1Balls.Remove(topBall1);
-                bottle2Balls.Add(topBall1);
+                int topIndex2 = bottle2Balls.Count - 1;
+                Ball topBall2 = bottle2Balls[topIndex2];
+                BallType type2 = topBall2.type;
+
+                if (ball.type == type2) 
+                {
+                    bottle1Balls.RemoveAt(i);
+                    bottle2Balls.Add(ball);
+                }
+                else
+                {
+                    break;
+                }
             }
-        } else
-        {
-            bottle1Balls.Remove(topBall1);
-            bottle2Balls.Add(topBall1);
+            else // Case: Bottle 2 is empty
+            {
+                if (ball.type == type1) // Gett all the same color of ball to another tube 
+                {
+                    bottle1Balls.RemoveAt(i);
+                    bottle2Balls.Add(ball);
+                }
+                else
+                {
+                    break;
+                }
+            }
         }
 
+        //Refresh game graphic after switching ball
         gameGraphics.RefreshGameGraphic(bottles);
     }
 
@@ -116,6 +129,8 @@ public class Game : MonoBehaviour
         Bottle b2 = bottles[bottleIndex2];
 
         SwitchBall(b1, b2);
+
+        Debug.Log("Is Win " + CheckWinCondition());
     }
 
     public bool CheckWinCondition()
