@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
-using static Game;
 
 public class Game : MonoBehaviour
 {
     [SerializeField] private GameGraphics gameGraphics;
 
     public List<Bottle> bottles;
+
+    public List<Ball> switchBallList;
 
     private void Start()
     {
@@ -99,7 +99,6 @@ public class Game : MonoBehaviour
                 if (ball.type == type2 && bottle2Balls.Count < 4) 
                 {
                     bottle1Balls.RemoveAt(i);
-
                     bottle2Balls.Add(ball);
                 }
                 else
@@ -173,7 +172,14 @@ public class Game : MonoBehaviour
 
     public List<Ball> GetSwitchBallList(int bottleIndex1, int bottleIndex2)
     {
-        List<Ball> switchBallList = null;
+        if(switchBallList == null)
+        {
+            switchBallList = new List<Ball>();
+        } else
+        {
+            switchBallList.Clear();
+            Debug.Log("Game.Switch ball list is cleared");
+        }
 
         Bottle b1 = bottles[bottleIndex1];
         Bottle b2 = bottles[bottleIndex2];
@@ -214,8 +220,7 @@ public class Game : MonoBehaviour
             {
                 if (ball.type == type1) // Gett all the same color of ball to another tube 
                 {
-                    bottle1Balls.RemoveAt(i);
-                    bottle2Balls.Add(ball);
+                    switchBallList.Add(ball);
                 }
                 else
                 {
@@ -232,6 +237,7 @@ public class Game : MonoBehaviour
         public List<Ball> balls = new List<Ball>();
     }
 
+    [System.Serializable]
     public class Ball
     {
         public BallType type;
